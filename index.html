@@ -50,15 +50,24 @@
         <h4>Work Better and Smarter with Ionic</h4>
       </section>
 
+      <section>
+          <img src="img/GAYL_Yassine_Pic.JPG" style="position: absolute; top:0; left:0; max-width: 260px; max-height: 260px; border-radius: 30px; border-color: white ">
+          <ul style="position: absolute; top:40px; left:300px;">
+            <li>Gayl Yassine</li>
+            <li>Software Engineer</li>
+            <li>Monitise - Mobile Banking Solutions</li>
+            <li><a href="https://twitter.com/Ionic_SF">@yassgayl</a></li>
+          </ul>
+      </section>
 
       <section>
-        <img src="img/me.png" style="max-width: 260px; max-height: 260px; border-radius: 50%; display:block; margin: auto; margin-bottom: 40px;">
-        <h3>Mike Hartington</h3>
-        <h4>Developer Advocate</h4>
-        <h4>Providence, RI</h4>
-        <p><a href="https://twitter.com/mhartington">@mhartington</a></p>
-        <p><a href="https://github.com/mhartington">github.com/mhartington</a></p>
-
+          <img src="img/ionic-sanfrancisco.png" style="position: absolute; top:0; left:0; max-width: 260px; max-height: 260px; border-radius: 30px;">
+          <ul style="position: absolute; top:40px; left:300px;">
+            <li>Ionic San Francisco</li>
+            <li>Ionic Community</li>
+            <li>Ionic 2 by Max Lynch July 29</li>
+            <li><a href="https://twitter.com/Ionic_SF">@Ionic_SF</a></li>
+          </ul>
       </section>
 
       <section>
@@ -75,13 +84,6 @@
           <strong>web dev</strong> environment</p>
       </section>
 
-      <section data-background="img/ionicio.png">
-      </section>
-
-
-      <section data-background="img/ionic-push.png">
-
-      </section>
 
       <section data-background="img/community.jpg">
       </section>
@@ -118,7 +120,7 @@
         <h3>Lint all the things</h3>
         <blockquote>The goal of this project is to help JavaScript developers write complex programs without worrying about typos and language gotchas.</blockquote>
         <em>
-          <small>Stuff that we should be doing all the time</small>
+          <small class="fragment">Stuff that we should be doing all the time</small>
         </em>
       </section>
 
@@ -131,6 +133,7 @@
       </section>
 
       <section>
+        <h3>Define the task</h3>
         <pre><code data-trim>
 var eslint = require('gulp-eslint');
 
@@ -147,6 +150,7 @@ gulp.task('lint', function() {
       </section>
 
       <section>
+        <h3>Add to watch task</h3>
       <pre><code data-trim>
 var paths = {
   sass: ['./scss/**/*.scss'],
@@ -158,6 +162,28 @@ gulp.task('watch', function() {
   // lint while ionic serve
   gulp.watch(paths.js, ['lint']);
 });
+
+      </code></pre>
+      </section>
+
+
+      <section>
+        <h3>Add to ionic.project</h3>
+        <p>gulpStartupTasks: will be executed after Ionic Serve</p>
+      <pre><code data-trim>
+{
+  "name": "ionic-belgium-demo",
+  "app_id": "",
+  "gulpStartupTasks": [
+    "sass",
+    "watch",
+    "lint"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}
 
       </code></pre>
       </section>
@@ -215,6 +241,9 @@ gulp.task('watch', function() {
   </section>
 
 <section>
+  <aside class="notes">
+    JSCS is a good choice if you only want to check coding style, but ESLint does that and it checks your code for bugs and other problems as well.
+  </aside>
   <h4>There's also JSCS</h4>
   <p><a target="_blank" href="http://jscs.info/">JavaScript Code Style</a></p>
 <br>
@@ -239,6 +268,9 @@ gulp.task('watch', function() {
 </section>
 
 <section>
+  <aside class="notes">
+    The results for the total load time (CSS and JS). Minified loaded 10% faster.
+  </aside>
   <h3>
     Not really needed for Hybrid Apps!
   </h3>
@@ -252,12 +284,67 @@ gulp.task('watch', function() {
 
 
 <section>
+  <aside class="notes">
+    The results for the total load time (CSS and JS). Minified loaded 10% faster.
+  </aside>  
   <h3>REASONS TO MINIFY/UGLIFY FOR HYBRID</h3>
   <h4>Protect your code</h4>
   <a href="https://blog.nraboy.com/2014/11/extract-android-apk-view-source-code/" target="_blank">Extracting Souce Code From an APK</a>
 </section>
 
+  <section>
+      <aside class="notes">
+        Cordova Hooks represent special scripts which could be added by application and plugin developers or even by your own build system to customize cordova commands
+      </aside>
+      <h3>How are we going to uglify our code?</h3>
+      <h4 class="fragment">Using Task runner (Gulp/Grunt) ?</h4>
+      <h4 class="fragment">Using Cordova Life Cycle: Hooks Directory</h4>
+
+          <pre class="fragment"><code data-trim>
+after_build
+after_compile
+after_clean
+after_docs
+after_emulate
+after_platform_add
+after_platform_rm
+after_platform_ls
+after_plugin_add
+after_plugin_ls
+after_plugin_rm
+after_plugin_search
+after_plugin_install // Plugin hooks in plugin.xml are executed for a plugin being installed only
+after_prepare
+after_run
+after_serve
+before_build
+before_clean
+before_compile
+before_docs
+before_emulate
+before_platform_add
+before_platform_rm/
+before_platform_ls
+before_plugin_add
+before_plugin_ls
+before_plugin_rm
+before_plugin_search/
+before_plugin_install // Plugin hooks in plugin.xml are executed for a plugin being installed only
+before_plugin_uninstall // Plugin hooks in plugin.xml are executed for a plugin being uninstalled only
+before_prepare
+before_run
+before_serve
+pre_package // Windows and Windows Phone only
+    </code></pre>
+  </section>
+
+
+
+
 <section>
+  <aside class="notes">
+    This hook does not change your assets that live in the root www folder. It will uglify the assets that get output to the platforms folder after a prepare or build
+  </aside>
   <h3>
     Cordova Hooks FTW
   </h3>
@@ -288,7 +375,11 @@ $ npm install cordova-uglify --save-dev
 </section>
 
 <section>
+  <aside class="notes">
+    The growth in overall page size. 50% rate of growth in just one year (From May 2012 till May 2013) 
+  </aside>
   <h3>Over 600KB of Images</h3>
+  <h3>The average web page has grown by 186% since 2010</h3>
   <img src="./img/page-growth.gif" alt="">
   <p>
     <a href="http://www.webperformancetoday.com/2013/06/05/web-page-growth-2010-2013/" target="_blank">
@@ -317,6 +408,7 @@ $ npm install cordova-uglify --save-dev
 
 
 <section>
+  <h3>Define the task</h3>
   <pre><code class="javascript" data-trim>
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
@@ -334,6 +426,14 @@ gulp.task('img', function() {
 });
   </code></pre>
 </section>
+
+<section>
+  <h3>Execute the task</h3>
+  <h4>Manually: gulp img</h4>
+  <h4>Within Cordova Lifecycle: Hooks directory</h4>
+  <h5 class="fragment">Tips: can execute gulp/grunt tasks within node js scripts</h5>
+</section>
+
 
 
 <section>
@@ -380,7 +480,7 @@ gulp.task('img', function() {
 </section>
 
 <section>
-  <h3 class="fragment">
+  <h3>
     <em>How do I change my app's name?</em>
   </h3>
   <h3 class="fragment">
@@ -395,6 +495,10 @@ gulp.task('img', function() {
 </section>
 
 <section>
+  <aside class="notes">
+    gulp-cordova-bump: will be used for semver.
+    gulp-cordova-config: will be used for configuring our app's name and id
+  </aside>
   <h3>We can use gulp for that</h3>
   <h3><a href="https://www.npmjs.com/package/gulp-cordova-bump" targe="_blank">gulp-cordova-bump</a></h3>
   <h3><a href="https://www.npmjs.com/package/gulp-cordova-config" targe="_blank">gulp-cordova-config</a></h3>
@@ -402,6 +506,7 @@ gulp.task('img', function() {
 
 
 <section>
+  <h3>Install and add task</h3>
   <pre><code class="bash">
 $ npm install --save-dev gulp-cordova-bump
   </code></pre>
@@ -440,18 +545,14 @@ $ gulp bump --setversion=2.1.0
   <h3 class="fragment">ヾ(⌐■_■)ノ♪</h3>
 </section>
 
-<section>
-  <h3>
-    <a href="https://github.com/mhartington/gulp-cordova-config" target="_blank">gulp-cordova-config</a>
-  </h3>
-  <p>
-    <small>
-      ...made by yours truly...inspired by gulp-cordova-bump
-    </small>
-  </p>
-</section>
+  <section>
+    <img src="img/mhartington.png" style="max-width: 260px; max-height: 260px; border-radius: 50%; display:block; margin: auto; margin-bottom: 40px;">
+    <h3><a href="https://github.com/mhartington/gulp-cordova-config" target="_blank">gulp-cordova-config</a></h3>
+    <p><small>...made by Mike Hartington...inspired by gulp-cordova-bump</small></p>
+  </section>
 
 <section>
+  <h3>Install and add task</h3>
   <pre><code class="bash">
 $ npm install -g gulp-cordova-config
   </code></pre>
@@ -495,12 +596,12 @@ $ gulp config --appName="newApp"
         </h2>
         <h3>
           <a style="text-transform: lowercase;" href="https://twitter.com/ionicframework" target="_blank">
-              @mhartington
+              @yassgayl
             </a>
         </h3>
         <h4>
-          <a style="text-transform: lowercase;" href="http://mhartington.github.io/ionic-san-francisco" target="_blank">
-              mhartington.github.io/ionic-san-francisco
+          <a style="text-transform: lowercase;" href="http://yassgayl.github.io/ionic-san-francisco" target="_blank">
+              yassgayl.github.io/ionic-san-francisco
             </a>
         </h4>
       </section>
